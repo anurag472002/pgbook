@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Room Information</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #2c2828;
+      }
+      header {
+        background-color: #a19ba1;
+        color: #474545;
+        text-align: center;
+        padding: 1em 0;
+      }
+      .room-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        margin: 50px auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .room-details {
+        width: 60%;
+      }
+      .room-images {
+        width: 35%;
+        text-align: center;
+      }
+      h1,
+      h2 {
+        color: #333;
+      }
+      button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #555;
+      }
+      #booking-form {
+        display: none;
+        padding: 20px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 6px;
+        color: #555;
+      }
+      input {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+      img {
+        align-self: middle;
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .blink {
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          color: blue;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <b
+        ><u
+          ><h1>SHARDHA PG(<i>for boys</i>)</h1></u
+        ></b
+      >
+    </header>
+    <div class="room-info">
+      <div class="room-details">
+        <h2>Room Details</h2>
+        SHARDHA PG is one of the best PGs in Banglore. It has homely food, clean
+        and spacious rooms with modern amenities. It is located in one of the
+        most bustling area, with all the important facilites nearby. Air
+        conditioning is available in the room. The room has a capacity of double
+        and triple sharing. It also provides access to common facilities such as
+        Washing machine, refrigerator etc.
+        <h2>Facilities</h2>
+        <ul>
+          <li style=".blink">Wi-Fi(upto 1 GBps)</li>
+          <li>Air Conditioning, Washing Machine, refrigerator, RO</li>
+          <li>Common TV, common kitchen</li>
+          <li>common area(for reading ,group study , celebrations etc.)</li>
+          <li>food selection</li>
+        </ul>
+        <h2>Charges</h2>
+        <li style=".blink">single room:15000</li>
+        <li>double sharing room:11500</li>
+        <li>triple sharing room:9500</li>
+        <h2>Additional Charges</h2>
+        <li style=".blink">security = 2000</li>
+        <li>elctricity charge = 400(fixed)</li>
+
+        <h2>ROOMS AVAILABLE:</h2>
+        <u>
+          <p>single room - <span class="blink">0(left)</span></p></u
+        >
+        <u>
+          <p>double room - <span class="blink">0(left)</span></p>
+        </u>
+        <u>
+          <p>triple room - <span class="blink">2(left)</span></p>
+        </u>
+        <button id="refreshButton">Refresh</button>
+
+        <script>
+          // Add event listener to the button
+          document
+            .getElementById("refreshButton")
+            .addEventListener("click", function () {
+              // Reload the page
+              location.reload();
+            });
+        </script>
+        <br />
+        <h2>
+          <b><u>Location:</u></b>
+        </h2>
+        <p>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7777.156620831458!2d77.56296877115885!3d12.93480241372438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1518556105fd%3A0x16b8ef83ab00dab6!2sSharada%20krupa%20Gents%20PG%20Kantinivs!5e0!3m2!1sen!2sin!4v1708879875012!5m2!1sen!2sin"
+            width="200"
+            height="200"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </p>
+        <h6><button onclick="showBookingForm()">Book Now</button></h6>
+        <br />
+        <h2>
+          <b><u>Contact Us:</u></b>
+        </h2>
+
+        <li style=".blink">
+          <b><i>Address:</i></b
+          >28th 4th cross, Ashok Nagra, Banglore(560050) Karnataka.
+        </li>
+        <li style=".blink">
+          <b><i>phone No.:</i></b
+          >8279140423
+        </li>
+        <li style=".blink">
+          <b><i>instagram:</i></b>
+          <blockquote
+            class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/anuragsingh_/?igshid=NWJtdnlqYXExMXd2"
+            data-instgrm-version="14"
+            style="
+              background: #fff;
+              border: 0;
+              border-radius: 3px;
+              box-shadow:
+                0 0 1px 0 rgba(0, 0, 0, 0.5),
+                0 1px 10px 0 rgba(0, 0, 0, 0.15);
+              margin: 1px;
+              max-width: 200px;
+              min-width: 200px;
+              padding: 0;
+              width: 99.375%;
+              width: -webkit-calc(50% - 2px);
+              width: calc(50% - 2px);
+            "
+          >
+            <div style="padding: 16px">
+              <a
+                href="https://www.instagram.com/anuragsingh_/?igshid=NWJtdnlqYXExMXd2"
+                style="
+                  color: #000;
+                  font-family: Arial, sans-serif;
+                  font-size: 14px;
+                  font-style: normal;
+                  font-weight: normal;
+                  line-height: 17px;
+                  text-decoration: none;
+                  word-wrap: break-word;
+                "
+                target="_blank"
+                >View this post on Instagram</a
+              >
+            </div>
+          </blockquote>
+          <script async src="//www.instagram.com/embed.js"></script>
+        </li>
+        <li style=".blink">
+          <b><i>mail:</i></b
+          ><a href="mailto:lakshmipg@gmail.com">sardhapg@gmail.com</a>
+        </li>
+
+        <div id="booking-form">
+          <h2>Booking Form</h2>
+          <form action="#" method="post" onsubmit="return validateBooking()">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+
+            <select id="type">
+              TYPE:
+              <option value="typ1">single type</option>
+              <option value="typ2">double type</option>
+              <option value="typ3">triple type</option>
+              <br />
+            </select>
+
+            <label for="check-in">Booking Date:</label>
+            <input type="date" id="check-in" name="check-in" required />
+
+            <a href="one.html"><input type="submit" value="Submit Booking" /></a>
+          </form>
+        </div>
+      </div>
+
+      <div class="room-images">
+        <img
+          src="https://res.cloudinary.com/stanza-living/image/upload/f_auto,q_auto,w_600/e_improve/e_sharpen:10/e_saturation:10/v1613039987/Website/CMS-Uploads/ipsdl73ywcoy1ajbfasd.jpg"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://kiit.ac.in/wp-content/uploads/2022/03/KIIT-Hostel-3-Sharing.jpg"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOEvgt6BXnEqgxxWoeSFRyY6Nmo5Ny3axPOdyVRUUsmNUF79tNmN8Z06tQQJeVC6Rfcow&usqp=CAU"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://gitm.goel.edu.in/wp-content/uploads/2022/07/DSC_4364_Small.jpg"
+          alt="hostel room"
+        />
+        <img
+          src="https://5.imimg.com/data5/ZJ/BL/VW/SELLER-50725794/hostel-room-set-500x500.jpg"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://www.darshan.ac.in/U01/Page/Hostel-1.jpg"
+          alt="hostel room"
+        />
+      </div>
+    </div>
+
+    <script>
+      function showBookingForm() {
+        var bookingForm = document.getElementById("booking-form");
+        bookingForm.style.display = "block";
+
+        // Smooth scroll to the booking form
+        window.scrollTo({
+          top: bookingForm.offsetTop - 20,
+          behavior: "smooth",
+        });
+      }
+
+      function validateBooking() {
+        return true;
+      }
+    </script>
+  </body>
+</html>

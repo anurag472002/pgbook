@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PGFINDER</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .design {
+        position: relative;
+        overflow: hidden; /* Ensure the shapes don't overflow */
+      }
+
+      .design:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Ensure the shapes are behind the content */
+        background: linear-gradient(270deg, #5d54a4, #6a679e);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 0% 100%);
+      }
+
+      .design:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 220px;
+        height: 220px;
+        z-index: -1; /* Ensure the shapes are behind the content */
+        background: #6c63ac;
+        border-radius: 32px;
+        transform: translate(50%, -50%) rotate(45deg);
+      }
+
+      .design .container {
+        position: relative;
+        z-index: 1; /* Ensure content stays above the background shapes */
+      }
+
+      /* Navbar styles */
+      .screen__background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        -webkit-clip-path: inset(0 0 0 0);
+        clip-path: inset(0 0 0 0);
+      }
+
+      .screen__background__shape {
+        transform: rotate(45deg);
+        position: absolute;
+      }
+
+      .screen__background__shape2 {
+        height: 220px;
+        width: 220px;
+        background: #6c63ac;
+        top: 500px;
+        right: 0;
+        border-radius: 32px;
+      }
+
+      .screen__background__shape3 {
+        height: 540px;
+        width: 190px;
+        background: linear-gradient(270deg, #5d54a4, #6a679e);
+        top: 550px;
+        right: 0;
+        border-radius: 32px;
+      }
+
+      .screen__background__shape4 {
+        height: 400px;
+        width: 200px;
+        background: #7e7bb9;
+        top: 600px;
+        right: 50px;
+        border-radius: 60px;
+      }
+      .navbar {
+        background-color: #776bcc;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 10px; /* Adjust vertical and horizontal padding */
+        height: 80px; /* Adjust the height as needed */
+      }
+
+      .navbar-left {
+        /* Styles for left side of the navbar */
+        font-size: 20px; /* Adjust the font size as needed */
+        font-weight: bold; /* Optionally, make the text bold */
+        color: white; /* Set the color of the text */
+        margin-right: auto; /* Pushes the text to the left */
+      }
+      .pg-finder {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Your sexy font */
+        font-size: 70px; /* Adjust the font size as needed */
+        color: white; /* Set the color of the text */
+        margin-left: 120px; /* Move a little bit towards right */
+      }
+
+      .navbar-right button {
+        color: white;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        margin-left: 10px; /* Adjust as needed */
+      }
+
+      /* Search section styles */
+      #search {
+        background-color: #776bcc;
+        color: white;
+        padding: 60px 0;
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      #search h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      #search p {
+        font-size: 18px;
+        margin-bottom: 30px;
+      }
+
+      #searchForm {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+      }
+
+      #searchForm input[type="text"] {
+        padding: 15px;
+        border: none;
+        border-radius: 25px 0 0 25px;
+        width: 300px;
+        font-size: 16px;
+      }
+
+      #searchForm input[type="submit"] {
+        background-color: #4b0082;
+        color: white;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 0 25px 25px 0;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      #searchForm input[type="submit"]:hover {
+        background-color: #a66fd6;
+      }
+
+      /* About, Extra Content, Contact Us section styles */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      h2 {
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      p {
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      /* Footer styles */
+      footer {
+        background-color: #4b0082;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        margin-top: 50px;
+      }
+
+      footer p {
+        font-size: 16px;
+      }
+      .navbar button {
+        background-color: #4b0082;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 25px;
+        margin-right: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      .signup-btn,
+      .login-btn,
+      .about-btn,
+      .contact-btn {
+        color: white;
+        font-size: 30px;
+        background: #4b0082;
+        background-color: #4b0082;
+        border: none;
+        cursor: pointer;
+        margin-right: 50px; /* Adjust as needed */
+        /* Adding protruded effect */
+        padding: 15px 25px;
+        border-radius: 25px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+      /* On hover effect */
+      .signup-btn:hover,
+      .login-btn:hover,
+      .about-btn:hover,
+      .contact-btn:hover {
+        background-color: #deb1fe;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+      }
+      #about {
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="navbar-left">
+          <span class="pg-finder">ComfortINN</span>
+          <!-- Add your icon here -->
+          <!-- <img src="icon.png" alt="Icon"> -->
+        </div>
+        <div class="navbar-right">
+          <button class="about-btn" onclick="scrollToSection('about')">
+            About
+          </button>
+          <button class="contact-btn" onclick="scrollToSection('contact')">
+            Contact Us
+          </button>
+          <button
+            class="signup-btn"
+            onclick="window.location.href='signup.html'"
+          >
+            Signup
+          </button>
+          <button class="login-btn" onclick="window.location.href='login.html'">
+            Login
+          </button>
+        </div>
+      </nav>
+    </header>
+    <main >
+      <section id="search">
+        <div class="container">
+          <h2>Search for PGs</h2>
+          <p>
+            Use our powerful search tool to find PG accommodations tailored to
+            your preferences. Simply enter your desired location and let PG
+            Finder do the rest!
+          </p>
+          <p>
+            We provide detailed information about each PG, including amenities,
+            pricing, and availability. With PG Finder, you can easily compare
+            different options and make an informed decision.
+          </p>
+          <p>
+            Our platform also allows you to read reviews from other users,
+            helping you choose the best PG for your needs.
+          </p>
+          <form id="searchForm" onsubmit="handleSearch(event)">
+            <input
+              type="text"
+              id="locationInput"
+              placeholder="Enter Location"
+            />
+            <input type="submit" value="Search" />
+          </form>
+          <div id="searchResultsWithImages"></div>
+        </div>
+      </section>
+      <div class="design">
+        <section id="about">
+          <div class="container">
+            
+            <h2>About Us</h2>
+            <p>
+              <div class="screen__background">
+                <div
+                  class="screen__background__shape screen__background__shape1"
+                ></div>
+                <div
+                  class="screen__background__shape screen__background__shape2"
+                ></div>
+                <div
+                  class="screen__background__shape screen__background__shape3"
+                ></div>
+                <div
+                  class="screen__background__shape screen__background__shape4"
+                ></div>
+              </div>
+              Welcome to PG Finder, your ultimate destination for finding paying
+              guest accommodations. We strive to provide you with the best PG
+              options suited to your needs and preferences.
+            </p>
+            <p>
+              We have a team of dedicated professionals constantly working to
+              ensure that your experience with PG Finder is seamless and
+              enjoyable.
+            </p>
+            <p>
+              Our platform offers a wide range of features, including advanced
+              search filters, user reviews, and real-time availability updates.
+            </p>
+            <p>
+              Whether you're a student, a working professional, or someone in
+              between, PG Finder is here to help you find the perfect PG
+              accommodation.
+            </p>
+          </div>
+        </section>
+        <!-- Add more content here to enable scrolling -->
+        <section id="extra-content">
+          <div class="container">
+            <h2>Extra Content</h2>
+            <p>
+              This is additional content to demonstrate scrolling functionality.
+              You can add more content here as needed.
+            </p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+              ullamcorper condimentum tortor, vel dictum ante posuere ac.
+              Vivamus convallis quam sit amet risus gravida, et lobortis lorem
+              efficitur. Nam interdum odio at sapien bibendum, ac rhoncus dolor
+              condimentum.
+            </p>
+            <!-- Add more paragraphs or elements here -->
+          </div>
+        </section>
+        <section id="contact">
+          <div class="container">
+            <h2>Contact Us</h2>
+            <p>Have any questions or feedback? Feel free to reach out to us.</p>
+            <ul>
+              <li>Email: info@pgfinder.com</li>
+              <li>Phone: 99887766550</li>
+              <li>Address: B.M.S. College of Engineering, Bengaluru, India</li>
+            </ul>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+              
+              <div class="screen__background">
+                <div
+                  class="screen__background__shape screen__background__shape1"
+                ></div>
+                <div
+                  class="screen__background__shape screen__background__shape2"
+                ></div>
+                <div
+                  class="screen__background__shape screen__background__shape3"
+                ></div>
+                <div
+                  class="screen__background__shape screen__background__shape4"
+                ></div>
+              </div>
+               </p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 PG Finder. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="scripts.js"></script>
+    <script>
+      function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+
+      function handleSearch(event) {
+        event.preventDefault();
+        const location = document.getElementById("locationInput").value;
+        // Perform search functionality here
+        console.log("Searching for:", location);
+      }
+    </script>
+  </body>
+</html>

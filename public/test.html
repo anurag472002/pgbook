@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Room Information</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #776bcc;
+      }
+      header {
+        background-color: #a19ba1;
+        color: #474545;
+        text-align: center;
+        padding: 1em 0;
+      }
+      .room-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 80%;
+        margin: 50px auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .room-details {
+        width: 60%;
+      }
+      .room-images {
+        width: 35%;
+        text-align: center;
+      }
+      h1,
+      h2 {
+        color: #333;
+      }
+      button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #555;
+      }
+      #booking-form {
+        display: none;
+        padding: 20px;
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      label {
+        margin-bottom: 6px;
+        color: #555;
+      }
+      input {
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+      img {
+        align-self: middle;
+        max-width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .blink {
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          color: blue;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <b
+        ><u
+          ><h1>HARI PG(<i>for boys</i>)</h1></u
+        ></b
+      >
+    </header>
+    <div class="room-info">
+      <div class="room-details">
+        <h2>Room Details</h2>
+        HARI PG is one of the best PGs in Bangalore. Safety, affordability and
+        comfort are at par with any other PGs in the city. AC rooms are
+        available at extra charges, and security deposits are also hassle free.
+        It has good reviews by all the students, and is known for cleanliness
+        and good quality of food. The room is spacious with a double bed, triple
+        beds.
+        <h2>Facilities</h2>
+        <ul>
+          <li style=".blink">Wi-Fi(upto 1 GBps)</li>
+          <li>Air Conditioning, Washing Machine, refrigerator, RO</li>
+          <li>Common TV, common kitchen</li>
+          <li>Common area(for reading, group study, celebrations etc.)</li>
+          <li>food selection</li>
+        </ul>
+        <h2>Charges</h2>
+        <li style=".blink">single room:16000</li>
+        <li>double sharing room:12500</li>
+        <li>triple sharing room:8500</li>
+        <h2>Additional Charges</h2>
+        <li style=".blink">security = 2000</li>
+        <li>elctricity charge = 400(fixed)</li>
+
+        <h2>ROOMS AVAILABLE:</h2>
+        <u>
+          <p>single room - <span class="blink">2(left)</span></p></u
+        >
+        <u>
+          <p>double room - <span class="blink">0(left)</span></p>
+        </u>
+        <u>
+          <p>triple room - <span class="blink">2(left)</span></p>
+        </u>
+        <button id="refreshButton">Refresh</button>
+
+        <script>
+          // Add event listener to the button
+          document
+            .getElementById("refreshButton")
+            .addEventListener("click", function () {
+              // Reload the page
+              location.reload();
+            });
+        </script>
+        <br />
+        <h2>
+          <b><u>Location:</u></b>
+        </h2>
+        <p>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d124433.37947101318!2d77.46218047182377!3d12.93706058583685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae15473defa719%3A0x6669d89ba30af846!2sHari%20PG%20accommodation!5e0!3m2!1sen!2sin!4v1708879283987!5m2!1sen!2sin"
+            width="200"
+            height="200"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </p>
+        <h6><button onclick="showBookingForm()">Book Now</button></h6>
+        <br />
+        <h2>
+          <b><u>Contact Us:</u></b>
+        </h2>
+
+        <li style=".blink">
+          <b><i>Address:</i></b
+          >28th 5th cross, Ashok Nagra, Banglore(560050) Karnataka.
+        </li>
+        <li style=".blink">
+          <b><i>phone No.:</i></b
+          >8279140423
+        </li>
+        <li style=".blink">
+          <b><i>instagram:</i></b>
+          <blockquote
+            class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/anuragsingh_/?igshid=NWJtdnlqYXExMXd2"
+            data-instgrm-version="14"
+            style="
+              background: #fff;
+              border: 0;
+              border-radius: 3px;
+              box-shadow:
+                0 0 1px 0 rgba(0, 0, 0, 0.5),
+                0 1px 10px 0 rgba(0, 0, 0, 0.15);
+              margin: 1px;
+              max-width: 200px;
+              min-width: 200px;
+              padding: 0;
+              width: 99.375%;
+              width: -webkit-calc(50% - 2px);
+              width: calc(50% - 2px);
+            "
+          >
+            <div style="padding: 16px">
+              <a
+                href="https://www.instagram.com/anuragsingh_/?igshid=NWJtdnlqYXExMXd2"
+                style="
+                  color: #000;
+                  font-family: Arial, sans-serif;
+                  font-size: 14px;
+                  font-style: normal;
+                  font-weight: normal;
+                  line-height: 17px;
+                  text-decoration: none;
+                  word-wrap: break-word;
+                "
+                target="_blank"
+                >View this post on Instagram</a
+              >
+            </div>
+          </blockquote>
+          <script async src="//www.instagram.com/embed.js"></script>
+        </li>
+        <li style=".blink">
+          <b><i>mail:</i></b
+          ><a href="mailto:lakshmipg@gmail.com">haripg@gmail.com</a>
+        </li>
+
+        <div id="booking-form">
+          <h2>Booking Form</h2>
+          <!-- Update the action attribute to point to your server endpoint -->
+          <form action="/submit-form" method="post" onsubmit="return validateBooking()">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+
+            <select id="type" name="type"> <!-- Added name attribute -->
+              <option value="typ1">single type</option>
+              <option value="typ2">double type</option>
+              <option value="typ3">triple type</option>
+            </select>
+
+            <label for="check-in">Booking Date:</label>
+            <input type="date" id="check-in" name="check-in" required />
+
+            <input type="submit" value="Submit Booking" />
+          </form>
+        </div>
+
+
+      <div class="room-images">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbb9v4i8Yh8CP-Z3HoaS9lccUzUoJceuEaPg&usqp=CAU"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://kiit.ac.in/wp-content/uploads/2022/03/KIIT-Hostel-3-Sharing.jpg"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://www.lendi.org/images/amenties/hostel/h2.jpg"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://www.mitkundapura.com/Activities/Boys-Hostel-MIT-Kundapura-01.jpg"
+          alt="hostel room"
+        />
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgUBd5D3mP8Wo4FOWsUAS7r2kmdrqheJwuw-Ysy_-MXuMHHKDrGcZ55TP8Vd56Kywzm_E&usqp=CAU"
+          alt="Hostel Room"
+        />
+        <img
+          src="https://www.nrtec.in/wp-content/uploads/2021/01/IMG-20210120-WA0058.jpg"
+          alt="hostel room"
+        />
+      </div>
+    </div>
+
+    <script>
+      function showBookingForm() {
+        var bookingForm = document.getElementById("booking-form");
+        bookingForm.style.display = "block";
+
+        // Smooth scroll to the booking form
+        window.scrollTo({
+          top: bookingForm.offsetTop - 20,
+          behavior: "smooth",
+        });
+      }
+
+      function validateBooking() {
+        return true;
+      }
+    </script>
+  </body>
+</html>
