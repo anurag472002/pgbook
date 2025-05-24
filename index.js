@@ -1,9 +1,17 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 8000;
 const path = require("path");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+
+// CORS Configuration
+app.use(cors({
+  origin: "https://adityaaojhaaa.github.io",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -75,75 +83,9 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Dummy data for demonstration
-const pgAccommodations = [
-  {
-    id: 1,
-    location: "Basavangudi",
-    rent: 10000,
-    imgurl:
-      "https://res.cloudinary.com/stanza-living/image/upload/f_auto,q_auto,w_600/e_improve/e_sharpen:10/e_saturation:10/v1585641608/Website/CMS-Uploads/jngndizti95zwd5meio0.jpg",
-    pagelink: "test.html",
-  },
-  {
-    id: 2,
-    location: "Jayanagar",
-    rent: 12000,
-    imgurl:
-      "https://res.cloudinary.com/stanza-living/image/upload/f_auto,q_auto,w_600/e_improve/e_sharpen:10/e_saturation:10/v1585230219/Website/CMS-Uploads/gg2kktgdcehsmf1rxoei.jpg",
-    pagelink: "stanza.html",
-  },
-  {
-    id: 3,
-    location: "Banashankari",
-    rent: 9000,
-    imgurl:
-      "https://res.cloudinary.com/stanza-living/image/upload/f_auto,q_auto,w_600/e_improve/e_sharpen:10/e_saturation:10/v1580447945/Website/CMS-Uploads/osin1be3lvn0cn7f5v5b.jpg",
-    pagelink: "gayatri.html",
-  },
-  {
-    id: 4,
-    location: "Basavangudi",
-    rent: 11000,
-    imgurl:
-      "https://res.cloudinary.com/stanza-living/image/upload/f_auto,q_auto,w_600/e_improve/e_sharpen:10/e_saturation:10/f_auto,q_auto/v1658229640/Website/CMS-Uploads/exhwckhh0zbangvdrrjl.jpg",
-    pagelink: "shradha.html",
-  },
-  {
-    id: 5,
-    location: "Banashankari",
-    rent: 11000,
-    imgurl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl_CMC_lTIeD25vCuh7tqqRLWJFMYyLFuWDQ&usqp=CAU",
-    pagelink: "lakshmi.pg",
-  },
-  {
-    id: 6,
-    location: "Jayanagar",
-    rent: 11000,
-    imgurl:
-      "https://kripalhomes.com/wp-content/uploads/2023/02/WhatsApp-Image-2020-07-31-at-12.02.36-PM.jpeg",
-  },
-  {
-    id: 7,
-    location: "Basavangudi",
-    rent: 11000,
-    imgurl:
-      "https://imagecdn.99acres.com/media1/23569/2/471382128M-1707043145377.webp",
-  },
-];
-
-app.get("/search", (req, res) => {
-  const location = req.query.location;
-  // Simulated backend logic to filter results
-  const filteredResults = pgAccommodations.filter((accommodation) =>
-    accommodation.location.toLowerCase().includes(location.toLowerCase()),
-  );
-  res.json(filteredResults);
-});
+// Rest of your existing code...
 
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-// index.js
