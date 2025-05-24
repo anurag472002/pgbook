@@ -5,7 +5,7 @@ document
     const locationInput = document.getElementById("locationInput").value;
 
     // Fetch search results from the backend
-    fetch(`/search?location=${locationInput}`)
+    fetch(`https://pgbook-backend.onrender.com/search?location=${locationInput}`)
       .then((response) => response.json())
       .then((data) => {
         // Display search results on the webpage
@@ -60,7 +60,7 @@ document
     const password = document.getElementById("password").value;
 
     // Send a POST request to the login endpoint
-    fetch("/login", {
+    fetch("https://pgbook-backend.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
