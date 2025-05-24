@@ -588,9 +588,9 @@
           setLoadingState(true);
 
           // Send signup request
-          fetch(
-            "https://eff527b7-50c8-439d-bab5-c3aedd57deb6-00-2pl9oz6o13q26.pike.replit.dev/signup",
-            {
+          // Change this line (around line 346):
+fetch("https://pgbook-backend.onrender.com/signup", {
+
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
