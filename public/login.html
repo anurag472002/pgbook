@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Login - ComfortINN</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
       @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 
@@ -103,6 +107,15 @@
         padding-top: 156px;
       }
 
+      .login h1 {
+        color: white;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-align: center;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
       .login__field {
         padding: 20px 0px;
         position: relative;
@@ -189,9 +202,61 @@
       .social-login__icon:hover {
         transform: scale(1.5);
       }
+
+      .back-to-home {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .back-to-home:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .error-message {
+        color: #ff4757;
+        font-size: 14px;
+        margin-top: 10px;
+        text-align: center;
+        display: none;
+        background: rgba(255, 71, 87, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 71, 87, 0.2);
+      }
+
+      .success-message {
+        color: #2ed573;
+        font-size: 14px;
+        margin-top: 10px;
+        text-align: center;
+        display: none;
+        background: rgba(46, 213, 115, 0.1);
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(46, 213, 115, 0.2);
+      }
     </style>
   </head>
   <body>
+    <a href="index.html" class="back-to-home">
+      <i class="fas fa-arrow-left"></i>
+      Back to Home
+    </a>
+
     <div class="container">
       <div class="screen">
         <div class="screen__background">
@@ -230,6 +295,10 @@
                   placeholder="Password"
                 />
               </div>
+
+              <div class="error-message" id="errorMessage"></div>
+              <div class="success-message" id="successMessage"></div>
+
               <button type="button" id="loginButton" class="login__submit">
                 Login <i class="button__icon fa fa-arrow-right"></i>
               </button>
@@ -255,15 +324,27 @@
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const loginButton = document.getElementById("loginButton");
+        const errorMessage = document.getElementById("errorMessage");
+        const successMessage = document.getElementById("successMessage");
+
         if (loginButton) {
           loginButton.addEventListener("click", function () {
             // Get username and password from the form
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
 
+            // Clear any previous messages
+            hideMessages();
+
+            // Basic validation
+            if (!username || !password) {
+              showError("Please enter both username and password.");
+              return;
+            }
+
             // Send a POST request to the login endpoint
             fetch(
-              "https://5a9185e3-0af1-4f3f-a969-67308452a840-00-26v3jv6kxkwod.pike.replit.dev/login",
+              "https://eff527b7-50c8-439d-bab5-c3aedd57deb6-00-2pl9oz6o13q26.pike.replit.dev/login",
               {
                 method: "POST",
                 headers: {
@@ -272,23 +353,89 @@
                 body: JSON.stringify({ username, password }),
               },
             )
-              .then((response) => {
+              .then(async (response) => {
                 if (response.ok) {
-                  // If login is successful, redirect to index.html
-                  window.location.href = "/index.html";
+                  // Check content type to determine how to parse response
+                  const contentType = response.headers.get("content-type");
+
+                  if (contentType && contentType.includes("application/json")) {
+                    // Response is JSON
+                    return await response.json();
+                  } else {
+                    // Response is text (like "Login successful!")
+                    const textResponse = await response.text();
+                    console.log("Text response:", textResponse);
+
+                    // Create a default user object for text responses
+                    return {
+                      name: username,
+                      email: `${username}@example.com`,
+                      username: username,
+                      id: Date.now().toString(),
+                    };
+                  }
                 } else {
-                  // If login fails, display an error message
-                  alert(
-                    "Login failed. Please check your username and password.",
-                  );
+                  throw new Error("Login failed");
                 }
+              })
+              .then((userData) => {
+                console.log("Login successful, user data:", userData);
+
+                // Save user authentication data to localStorage
+                const authData = {
+                  isLoggedIn: true,
+                  user: {
+                    name: userData.name || userData.username || username,
+                    email: userData.email || `${username}@example.com`,
+                    id:
+                      userData.id || userData.user_id || Date.now().toString(),
+                    username: userData.username || username,
+                  },
+                };
+                localStorage.setItem("userAuth", JSON.stringify(authData));
+
+                // Show success message
+                showSuccess("Login successful! Redirecting...");
+
+                // Redirect to index.html after a short delay
+                setTimeout(() => {
+                  window.location.href = "index.html";
+                }, 1500);
               })
               .catch((error) => {
                 console.error("Error logging in:", error);
+                showError(
+                  "Login failed. Please check your username and password.",
+                );
               });
           });
         } else {
           console.error("Login button not found");
+        }
+
+        function showError(message) {
+          if (errorMessage) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = "block";
+          }
+          if (successMessage) {
+            successMessage.style.display = "none";
+          }
+        }
+
+        function showSuccess(message) {
+          if (successMessage) {
+            successMessage.textContent = message;
+            successMessage.style.display = "block";
+          }
+          if (errorMessage) {
+            errorMessage.style.display = "none";
+          }
+        }
+
+        function hideMessages() {
+          if (errorMessage) errorMessage.style.display = "none";
+          if (successMessage) successMessage.style.display = "none";
         }
       });
     </script>

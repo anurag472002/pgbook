@@ -3,401 +3,1604 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PGFINDER</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>ComfortINN</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-      .design {
-        position: relative;
-        overflow: hidden; /* Ensure the shapes don't overflow */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      .design:before {
-        content: "";
-        position: absolute;
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.6;
+        color: #333;
+        overflow-x: hidden;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+
+      /* Enhanced Navbar */
+      .navbar {
+        background: rgba(119, 107, 204, 0.95);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1; /* Ensure the shapes are behind the content */
-        background: linear-gradient(270deg, #5d54a4, #6a679e);
-        clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 0% 100%);
-      }
-
-      .design:after {
-        content: "";
-        position: absolute;
-        top: 50%;
         right: 0;
-        width: 220px;
-        height: 220px;
-        z-index: -1; /* Ensure the shapes are behind the content */
-        background: #6c63ac;
-        border-radius: 32px;
-        transform: translate(50%, -50%) rotate(45deg);
+        z-index: 1000;
+        transition: all 0.3s ease;
       }
 
-      .design .container {
+      .navbar.scrolled {
+        background: rgba(75, 0, 130, 0.98);
+        padding: 15px 40px;
+      }
+
+      .navbar-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .pg-finder {
+        font-family: "Inter", sans-serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        letter-spacing: -1px;
+      }
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .navbar-right {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      /* Modern Button Styles */
+      .nav-btn {
+        color: white;
+        font-size: 16px;
+        font-weight: 500;
+        background: transparent;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        padding: 12px 24px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(10px);
+      }
+
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-btn.primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      .nav-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+      }
+
+      /* User Profile Dropdown Styles */
+      .user-profile-dropdown {
         position: relative;
-        z-index: 1; /* Ensure content stays above the background shapes */
+        display: inline-block;
       }
 
-      /* Navbar styles */
-      .screen__background {
+      .user-profile-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .user-profile-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+
+      .dropdown-arrow {
+        font-size: 12px;
+        transition: transform 0.3s ease;
+      }
+
+      .user-profile-dropdown.active .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+
+      /* Dropdown Menu */
+      .profile-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 280px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .user-profile-dropdown.active .profile-dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdown-header {
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .user-avatar-large {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .user-details h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .user-details p {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .dropdown-divider {
+        height: 1px;
+        background: rgba(0, 0, 0, 0.1);
+        margin: 8px 0;
+      }
+
+      .dropdown-item {
+        width: 100%;
+        padding: 15px 20px;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        color: #333;
+      }
+
+      .dropdown-item:hover {
+        background: #f8fafc;
+      }
+
+      .dropdown-item.logout-btn {
+        color: #e53e3e;
+      }
+
+      .dropdown-item.logout-btn:hover {
+        background: #fed7d7;
+      }
+
+      .dropdown-item i {
+        width: 16px;
+        text-align: center;
+      }
+
+      /* Welcome Message */
+      .welcome-message {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 30px;
+        color: white;
+        text-align: center;
+      }
+
+      .welcome-message h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .welcome-message p {
+        opacity: 0.9;
+        font-size: 16px;
+      }
+
+      /* Hero Section */
+      #search {
+        background: linear-gradient(
+          135deg,
+          #776bcc 0%,
+          #667eea 50%,
+          #764ba2 100%
+        );
+        color: white;
+        padding: 140px 0 80px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+
+      #search::before {
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 0;
-        -webkit-clip-path: inset(0 0 0 0);
-        clip-path: inset(0 0 0 0);
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
       }
 
-      .screen__background__shape {
-        transform: rotate(45deg);
-        position: absolute;
-      }
-
-      .screen__background__shape2 {
-        height: 220px;
-        width: 220px;
-        background: #6c63ac;
-        top: 500px;
-        right: 0;
-        border-radius: 32px;
-      }
-
-      .screen__background__shape3 {
-        height: 540px;
-        width: 190px;
-        background: linear-gradient(270deg, #5d54a4, #6a679e);
-        top: 550px;
-        right: 0;
-        border-radius: 32px;
-      }
-
-      .screen__background__shape4 {
-        height: 400px;
-        width: 200px;
-        background: #7e7bb9;
-        top: 600px;
-        right: 50px;
-        border-radius: 60px;
-      }
-      .navbar {
-        background-color: #776bcc;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 10px; /* Adjust vertical and horizontal padding */
-        height: 80px; /* Adjust the height as needed */
-      }
-
-      .navbar-left {
-        /* Styles for left side of the navbar */
-        font-size: 20px; /* Adjust the font size as needed */
-        font-weight: bold; /* Optionally, make the text bold */
-        color: white; /* Set the color of the text */
-        margin-right: auto; /* Pushes the text to the left */
-      }
-      .pg-finder {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; /* Your sexy font */
-        font-size: 70px; /* Adjust the font size as needed */
-        color: white; /* Set the color of the text */
-        margin-left: 120px; /* Move a little bit towards right */
-      }
-
-      .navbar-right button {
-        color: white;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        margin-left: 10px; /* Adjust as needed */
-      }
-
-      /* Search section styles */
-      #search {
-        background-color: #776bcc;
-        color: white;
-        padding: 60px 0;
-        text-align: center;
-        margin-top: 40px;
+      .hero-content {
+        position: relative;
+        z-index: 2;
       }
 
       #search h2 {
-        font-size: 36px;
-        margin-bottom: 20px;
+        font-size: 64px;
+        font-weight: 800;
+        margin-bottom: 24px;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        letter-spacing: -2px;
+        background: linear-gradient(135deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
 
       #search p {
-        font-size: 18px;
-        margin-bottom: 30px;
+        font-size: 20px;
+        margin-bottom: 20px;
+        opacity: 0.9;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.7;
       }
 
+      /* Modern Search Form */
       #searchForm {
         display: flex;
         justify-content: center;
-        margin-bottom: 40px;
+        margin: 50px 0;
+        position: relative;
       }
 
-      #searchForm input[type="text"] {
-        padding: 15px;
+      .search-container {
+        position: relative;
+        display: flex;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 60px;
+        padding: 8px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .search-container:hover {
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+      }
+
+      #locationInput {
+        padding: 20px 30px;
         border: none;
-        border-radius: 25px 0 0 25px;
-        width: 300px;
-        font-size: 16px;
+        border-radius: 50px;
+        width: 400px;
+        font-size: 18px;
+        background: transparent;
+        color: #333;
+        outline: none;
+        font-weight: 500;
       }
 
-      #searchForm input[type="submit"] {
-        background-color: #4b0082;
+      #locationInput::placeholder {
+        color: #666;
+        opacity: 0.7;
+      }
+
+      .search-btn {
+        background: linear-gradient(135deg, #4b0082, #667eea);
         color: white;
         border: none;
-        padding: 15px 25px;
-        border-radius: 0 25px 25px 0;
+        padding: 20px 40px;
+        border-radius: 50px;
         cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
+        font-size: 18px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(75, 0, 130, 0.4);
       }
 
-      #searchForm input[type="submit"]:hover {
-        background-color: #a66fd6;
+      .search-btn:hover {
+        transform: translateX(5px);
+        box-shadow: 0 15px 40px rgba(75, 0, 130, 0.6);
       }
 
-      /* About, Extra Content, Contact Us section styles */
+      /* Floating Elements */
+      .floating-element {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .floating-element:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .floating-element:nth-child(2) {
+        width: 120px;
+        height: 120px;
+        top: 60%;
+        right: 15%;
+        animation-delay: 2s;
+      }
+
+      .floating-element:nth-child(3) {
+        width: 60px;
+        height: 60px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 4s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg);
+        }
+      }
+
+      /* Content Sections */
+      .content-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+        z-index: 10;
+      }
+
+      .design {
+        position: relative;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        overflow: hidden;
+      }
+
       .container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 40px;
       }
 
-      h2 {
-        font-size: 36px;
+      .section-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #1a202c;
+        text-align: center;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 2px;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+      }
+
+      .feature-card {
+        background: white;
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
         margin-bottom: 20px;
       }
 
-      p {
+      .feature-card h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #1a202c;
+      }
+
+      .feature-card p {
+        color: #64748b;
+        line-height: 1.8;
+        font-size: 16px;
+      }
+
+      /* Contact Section */
+      #contact {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        color: white;
+        padding: 100px 0;
+      }
+
+      #contact .section-title {
+        color: white;
+      }
+
+      #contact .section-title::after {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+      }
+
+      .contact-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-top: 60px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .contact-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-5px);
+      }
+
+      .contact-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      .contact-details h4 {
         font-size: 18px;
-        line-height: 1.6;
-        margin-bottom: 20px;
+        font-weight: 600;
+        margin-bottom: 5px;
       }
 
-      /* Footer styles */
+      .contact-details p {
+        opacity: 0.8;
+        font-size: 16px;
+      }
+
+      /* Footer */
       footer {
-        background-color: #4b0082;
+        background: #1a202c;
         color: white;
         text-align: center;
-        padding: 20px 0;
-        margin-top: 50px;
+        padding: 40px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       footer p {
         font-size: 16px;
+        opacity: 0.8;
       }
-      .navbar button {
-        background-color: #4b0082;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-        border-radius: 25px;
-        margin-right: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+
+      /* Background Shapes */
+      .bg-shapes {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
       }
-      .signup-btn,
-      .login-btn,
-      .about-btn,
-      .contact-btn {
-        color: white;
-        font-size: 30px;
-        background: #4b0082;
-        background-color: #4b0082;
-        border: none;
-        cursor: pointer;
-        margin-right: 50px; /* Adjust as needed */
-        /* Adding protruded effect */
-        padding: 15px 25px;
-        border-radius: 25px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
+
+      .shape {
+        position: absolute;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 50%;
+        animation: floatShape 20s linear infinite;
       }
-      /* On hover effect */
-      .signup-btn:hover,
-      .login-btn:hover,
-      .about-btn:hover,
-      .contact-btn:hover {
-        background-color: #deb1fe;
-        transform: translateY(-2px);
-        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+
+      .shape:nth-child(1) {
+        width: 200px;
+        height: 200px;
+        top: 10%;
+        left: -5%;
+        animation-delay: 0s;
       }
-      #about {
-        margin-top: 40px;
+
+      .shape:nth-child(2) {
+        width: 150px;
+        height: 150px;
+        top: 50%;
+        right: -5%;
+        animation-delay: 7s;
+      }
+
+      .shape:nth-child(3) {
+        width: 100px;
+        height: 100px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: 14s;
+      }
+
+      @keyframes floatShape {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0.3;
+        }
+        50% {
+          transform: translateY(-100px) rotate(180deg);
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(0) rotate(360deg);
+          opacity: 0.3;
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 15px 20px;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        .pg-finder {
+          font-size: 24px;
+        }
+
+        .navbar-right {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .nav-btn {
+          padding: 10px 16px;
+          font-size: 14px;
+        }
+
+        .profile-dropdown-menu {
+          width: 250px;
+        }
+
+        #search {
+          padding: 120px 0 60px;
+        }
+
+        #search h2 {
+          font-size: 36px;
+        }
+
+        #locationInput {
+          width: 280px;
+          font-size: 16px;
+        }
+
+        .search-container {
+          flex-direction: column;
+          width: 100%;
+          max-width: 400px;
+          margin: 0 auto;
+        }
+
+        .search-btn {
+          margin-top: 10px;
+          justify-content: center;
+        }
+
+        .container {
+          padding: 0 20px;
+        }
+
+        .section-title {
+          font-size: 32px;
+        }
+
+        .content-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Loading animation */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeIn 0.8s ease forwards;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
   <body>
     <header>
-      <nav class="navbar">
+      <nav class="navbar" id="navbar">
         <div class="navbar-left">
+          <div class="logo-icon">
+            <i class="fas fa-home"></i>
+          </div>
           <span class="pg-finder">ComfortINN</span>
-          <!-- Add your icon here -->
-          <!-- <img src="icon.png" alt="Icon"> -->
         </div>
-        <div class="navbar-right">
-          <button class="about-btn" onclick="scrollToSection('about')">
-            About
-          </button>
-          <button class="contact-btn" onclick="scrollToSection('contact')">
-            Contact Us
-          </button>
-          <button
-            class="signup-btn"
-            onclick="window.location.href='signup.html'"
-          >
-            Signup
-          </button>
-          <button class="login-btn" onclick="window.location.href='login.html'">
-            Login
-          </button>
+        <div class="navbar-right" id="navbarRight">
+          <!-- Default navbar for non-authenticated users -->
+          <div id="defaultNavbar">
+            <button class="nav-btn" onclick="scrollToSection('about')">
+              <i class="fas fa-info-circle"></i>
+              About
+            </button>
+            <button class="nav-btn" onclick="scrollToSection('contact')">
+              <i class="fas fa-envelope"></i>
+              Contact Us
+            </button>
+            <button
+              class="nav-btn primary"
+              onclick="window.location.href='signup.html'"
+            >
+              <i class="fas fa-user-plus"></i>
+              Signup
+            </button>
+            <button class="nav-btn" onclick="window.location.href='login.html'">
+              <i class="fas fa-sign-in-alt"></i>
+              Login
+            </button>
+          </div>
+
+          <!-- Authenticated user navbar -->
+          <div id="authNavbar" style="display: none">
+            <button class="nav-btn" onclick="scrollToSection('about')">
+              <i class="fas fa-info-circle"></i>
+              About
+            </button>
+            <button class="nav-btn" onclick="scrollToSection('contact')">
+              <i class="fas fa-envelope"></i>
+              Contact Us
+            </button>
+
+            <!-- User Profile Dropdown -->
+            <div class="user-profile-dropdown" id="userProfileDropdown">
+              <button
+                class="nav-btn user-profile-btn"
+                onclick="toggleProfileDropdown()"
+              >
+                <div class="user-avatar">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+                <span id="userName">User</span>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+              </button>
+
+              <!-- Dropdown Menu -->
+              <div class="profile-dropdown-menu" id="profileDropdown">
+                <div class="dropdown-header">
+                  <div class="user-info">
+                    <div class="user-avatar-large">
+                      <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                      <h4 id="dropdownUserName">John Doe</h4>
+                      <p id="dropdownUserEmail">john@example.com</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item" onclick="viewProfile()">
+                  <i class="fas fa-user"></i>
+                  View Profile
+                </button>
+                <button class="dropdown-item" onclick="editProfile()">
+                  <i class="fas fa-edit"></i>
+                  Edit Profile
+                </button>
+                <button class="dropdown-item" onclick="viewBookings()">
+                  <i class="fas fa-calendar-alt"></i>
+                  My Bookings
+                </button>
+                <button class="dropdown-item" onclick="viewFavorites()">
+                  <i class="fas fa-heart"></i>
+                  Favorites
+                </button>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item logout-btn" onclick="logout()">
+                  <i class="fas fa-sign-out-alt"></i>
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
     </header>
-    <main >
+
+    <main>
       <section id="search">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+
         <div class="container">
-          <h2>Search for PGs</h2>
-          <p>
-            Use our powerful search tool to find PG accommodations tailored to
-            your preferences. Simply enter your desired location and let PG
-            Finder do the rest!
-          </p>
-          <p>
-            We provide detailed information about each PG, including amenities,
-            pricing, and availability. With PG Finder, you can easily compare
-            different options and make an informed decision.
-          </p>
-          <p>
-            Our platform also allows you to read reviews from other users,
-            helping you choose the best PG for your needs.
-          </p>
-          <form id="searchForm" onsubmit="handleSearch(event)">
-            <input
-              type="text"
-              id="locationInput"
-              placeholder="Enter Location"
-            />
-            <input type="submit" value="Search" />
-          </form>
-          <div id="searchResultsWithImages"></div>
+          <div class="hero-content fade-in">
+            <!-- Welcome message for authenticated users -->
+            <div
+              id="welcomeMessage"
+              class="welcome-message"
+              style="display: none"
+            >
+              <h3>Welcome back, <span id="welcomeUserName">User</span>!</h3>
+              <p>Ready to find your perfect PG accommodation?</p>
+            </div>
+
+            <h2>Find Your Perfect PG</h2>
+            <p>
+              Discover comfortable and affordable paying guest accommodations
+              tailored to your lifestyle. Our advanced search technology
+              connects you with the best PG options in your desired location.
+            </p>
+            <p>
+              From modern amenities to budget-friendly options, we provide
+              detailed insights, genuine reviews, and real-time availability to
+              help you make the perfect choice.
+            </p>
+
+            <form id="searchForm" onsubmit="handleSearch(event)">
+              <div class="search-container">
+                <i
+                  class="fas fa-map-marker-alt"
+                  style="
+                    position: absolute;
+                    left: 30px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #666;
+                    z-index: 10;
+                  "
+                ></i>
+                <select
+                  id="locationDropdown"
+                  style="
+                    padding: 20px 30px 20px 60px;
+                    border: none;
+                    border-radius: 50px;
+                    width: 200px;
+                    font-size: 18px;
+                    background: transparent;
+                    color: #333;
+                    outline: none;
+                    font-weight: 500;
+                    margin-right: 10px;
+                    cursor: pointer;
+                  "
+                  onchange="updateLocationInput()"
+                >
+                  <option value="">Select Location</option>
+                  <option value="Basavanagudi">Basavanagudi</option>
+                  <option value="Jayanagar">Jayanagar</option>
+                  <option value="Koramangala">Koramangala</option>
+                  <option value="JP Nagar">JP Nagar</option>
+                </select>
+                <input
+                  type="text"
+                  id="locationInput"
+                  placeholder="Or type custom location"
+                  style="
+                    padding: 20px 30px;
+                    border: none;
+                    border-radius: 50px;
+                    width: 300px;
+                    font-size: 18px;
+                    background: transparent;
+                    color: #333;
+                    outline: none;
+                    font-weight: 500;
+                  "
+                />
+                <button type="submit" class="search-btn">
+                  <i class="fas fa-search"></i>
+                  Search Now
+                </button>
+              </div>
+            </form>
+            <div id="searchResultsWithImages"></div>
+          </div>
         </div>
       </section>
-      <div class="design">
+
+      <div class="design content-section">
+        <div class="bg-shapes">
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+        </div>
+
         <section id="about">
           <div class="container">
-            
-            <h2>About Us</h2>
-            <p>
-              <div class="screen__background">
-                <div
-                  class="screen__background__shape screen__background__shape1"
-                ></div>
-                <div
-                  class="screen__background__shape screen__background__shape2"
-                ></div>
-                <div
-                  class="screen__background__shape screen__background__shape3"
-                ></div>
-                <div
-                  class="screen__background__shape screen__background__shape4"
-                ></div>
+            <h2 class="section-title">About ComfortINN</h2>
+            <div class="content-grid">
+              <div class="feature-card fade-in">
+                <div class="feature-icon">
+                  <i class="fas fa-search-location"></i>
+                </div>
+                <h3>Smart Search</h3>
+                <p>
+                  Our intelligent search algorithm helps you find the perfect PG
+                  accommodation based on your specific needs, location
+                  preferences, and budget constraints.
+                </p>
               </div>
-              Welcome to PG Finder, your ultimate destination for finding paying
-              guest accommodations. We strive to provide you with the best PG
-              options suited to your needs and preferences.
-            </p>
-            <p>
-              We have a team of dedicated professionals constantly working to
-              ensure that your experience with PG Finder is seamless and
-              enjoyable.
-            </p>
-            <p>
-              Our platform offers a wide range of features, including advanced
-              search filters, user reviews, and real-time availability updates.
-            </p>
-            <p>
-              Whether you're a student, a working professional, or someone in
-              between, PG Finder is here to help you find the perfect PG
-              accommodation.
-            </p>
-          </div>
-        </section>
-        <!-- Add more content here to enable scrolling -->
-        <section id="extra-content">
-          <div class="container">
-            <h2>Extra Content</h2>
-            <p>
-              This is additional content to demonstrate scrolling functionality.
-              You can add more content here as needed.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              ullamcorper condimentum tortor, vel dictum ante posuere ac.
-              Vivamus convallis quam sit amet risus gravida, et lobortis lorem
-              efficitur. Nam interdum odio at sapien bibendum, ac rhoncus dolor
-              condimentum.
-            </p>
-            <!-- Add more paragraphs or elements here -->
-          </div>
-        </section>
-        <section id="contact">
-          <div class="container">
-            <h2>Contact Us</h2>
-            <p>Have any questions or feedback? Feel free to reach out to us.</p>
-            <ul>
-              <li>Email: info@pgfinder.com</li>
-              <li>Phone: 99887766550</li>
-              <li>Address: B.M.S. College of Engineering, Bengaluru, India</li>
-            </ul>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-              
-              <div class="screen__background">
-                <div
-                  class="screen__background__shape screen__background__shape1"
-                ></div>
-                <div
-                  class="screen__background__shape screen__background__shape2"
-                ></div>
-                <div
-                  class="screen__background__shape screen__background__shape3"
-                ></div>
-                <div
-                  class="screen__background__shape screen__background__shape4"
-                ></div>
+              <div class="feature-card fade-in">
+                <div class="feature-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <h3>Verified Reviews</h3>
+                <p>
+                  Read authentic reviews from real residents to make informed
+                  decisions. Our community-driven rating system ensures
+                  transparency and reliability.
+                </p>
               </div>
-               </p>
+
+              <div class="feature-card fade-in">
+                <div class="feature-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <h3>Real-time Updates</h3>
+                <p>
+                  Get instant notifications about availability, pricing changes,
+                  and new listings in your preferred areas. Never miss out on
+                  great opportunities.
+                </p>
+              </div>
+
+              <div class="feature-card fade-in">
+                <div class="feature-icon">
+                  <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure & Reliable</h3>
+                <p>
+                  All our listed properties are verified for safety and
+                  authenticity. We ensure a secure platform for both property
+                  owners and seekers.
+                </p>
+              </div>
+
+              <div class="feature-card fade-in">
+                <div class="feature-icon">
+                  <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile Optimized</h3>
+                <p>
+                  Access our platform seamlessly across all devices. Search,
+                  compare, and book your ideal PG accommodation on the go.
+                </p>
+              </div>
+
+              <div class="feature-card fade-in">
+                <div class="feature-icon">
+                  <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>
+                  Our dedicated support team is available round the clock to
+                  assist you with any queries or concerns throughout your
+                  journey.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </div>
+
+      <section id="contact">
+        <div class="container">
+          <h2 class="section-title">Get In Touch</h2>
+          <p
+            style="
+              text-align: center;
+              font-size: 18px;
+              opacity: 0.9;
+              margin-bottom: 20px;
+            "
+          >
+            Have questions or need assistance? We're here to help you find your
+            perfect accommodation.
+          </p>
+
+          <div class="contact-info">
+            <div class="contact-item fade-in">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Email Us</h4>
+                <p>info@pgfinder.com</p>
+              </div>
+            </div>
+
+            <div class="contact-item fade-in">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Call Us</h4>
+                <p>+91 99887766550</p>
+              </div>
+            </div>
+
+            <div class="contact-item fade-in">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="contact-details">
+                <h4>Visit Us</h4>
+                <p>B.M.S. College of Engineering<br />Bengaluru, India</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
+
     <footer>
       <div class="container">
-        <p>&copy; 2024 PG Finder. All rights reserved.</p>
+        <p>
+          &copy; 2024 ComfortINN. All rights reserved. | Crafted with ❤️ for
+          better living experiences.
+        </p>
       </div>
     </footer>
-    <script src="scripts.js"></script>
+
     <script>
-      function scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        section.scrollIntoView({ behavior: "smooth" });
+      // Authentication state management
+      let userAuth = {
+        isLoggedIn: false,
+        user: null,
+      };
+
+      // Check authentication status on page load
+      function checkAuthStatus() {
+        const userData = localStorage.getItem("userAuth");
+        if (userData) {
+          userAuth = JSON.parse(userData);
+          updateNavbarForLoggedInUser();
+          showWelcomeMessage();
+        }
       }
 
+      // Save authentication state
+      function saveAuthState(user) {
+        userAuth = {
+          isLoggedIn: true,
+          user: user,
+        };
+        localStorage.setItem("userAuth", JSON.stringify(userAuth));
+      }
+
+      // Clear authentication state
+      function clearAuthState() {
+        userAuth = {
+          isLoggedIn: false,
+          user: null,
+        };
+        localStorage.removeItem("userAuth");
+      }
+
+      // Update navbar for logged in user
+      function updateNavbarForLoggedInUser() {
+        const defaultNavbar = document.getElementById("defaultNavbar");
+        const authNavbar = document.getElementById("authNavbar");
+        const userName = document.getElementById("userName");
+        const dropdownUserName = document.getElementById("dropdownUserName");
+        const dropdownUserEmail = document.getElementById("dropdownUserEmail");
+
+        if (userAuth.isLoggedIn && userAuth.user) {
+          defaultNavbar.style.display = "none";
+          authNavbar.style.display = "flex";
+
+          // Update user info in navbar
+          userName.textContent = userAuth.user.name || "User";
+          dropdownUserName.textContent = userAuth.user.name || "John Doe";
+          dropdownUserEmail.textContent =
+            userAuth.user.email || "user@example.com";
+        } else {
+          defaultNavbar.style.display = "flex";
+          authNavbar.style.display = "none";
+        }
+      }
+
+      // Show welcome message for authenticated users
+      function showWelcomeMessage() {
+        if (userAuth.isLoggedIn && userAuth.user) {
+          const welcomeMessage = document.getElementById("welcomeMessage");
+          const welcomeUserName = document.getElementById("welcomeUserName");
+
+          welcomeUserName.textContent = userAuth.user.name || "User";
+          welcomeMessage.style.display = "block";
+        }
+      }
+
+      // Toggle profile dropdown
+      function toggleProfileDropdown() {
+        const dropdown = document.getElementById("userProfileDropdown");
+        dropdown.classList.toggle("active");
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function closeDropdown(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove("active");
+            document.removeEventListener("click", closeDropdown);
+          }
+        });
+      }
+
+      // Profile functions
+      function viewProfile() {
+        alert("Redirecting to profile page...");
+        // window.location.href = 'profile.html';
+      }
+
+      function editProfile() {
+        alert("Redirecting to edit profile page...");
+        // window.location.href = 'edit-profile.html';
+      }
+
+      function viewBookings() {
+        alert("Redirecting to bookings page...");
+        // window.location.href = 'bookings.html';
+      }
+
+      function viewFavorites() {
+        alert("Redirecting to favorites page...");
+        // window.location.href = 'favorites.html';
+      }
+
+      // Logout function
+      function logout() {
+        if (confirm("Are you sure you want to logout?")) {
+          clearAuthState();
+          updateNavbarForLoggedInUser();
+          document.getElementById("welcomeMessage").style.display = "none";
+          alert("You have been logged out successfully!");
+          // Optionally redirect to login page
+          // window.location.href = 'login.html';
+        }
+      }
+
+      // Simulate login (for testing purposes)
+      function simulateLogin() {
+        const testUser = {
+          name: "John Doe",
+          email: "john.doe@example.com",
+          id: "12345",
+        };
+        saveAuthState(testUser);
+        updateNavbarForLoggedInUser();
+        showWelcomeMessage();
+      }
+
+      // Check for login redirect parameter
+      function checkLoginRedirect() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginSuccess = urlParams.get("login");
+        const userData = urlParams.get("user");
+
+        if (loginSuccess === "success" && userData) {
+          try {
+            const user = JSON.parse(decodeURIComponent(userData));
+            saveAuthState(user);
+            updateNavbarForLoggedInUser();
+            showWelcomeMessage();
+
+            // Clean up URL
+            window.history.replaceState(
+              {},
+              document.title,
+              window.location.pathname,
+            );
+          } catch (error) {
+            console.error("Error parsing user data:", error);
+          }
+        }
+      }
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Smooth scrolling function
+      function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        const navbarHeight = document.querySelector(".navbar").offsetHeight;
+        const sectionTop = section.offsetTop - navbarHeight - 20;
+
+        window.scrollTo({
+          top: sectionTop,
+          behavior: "smooth",
+        });
+      }
+
+      // PG Database with 12 PGs across 4 locations
+      const pgDatabase = {
+        Basavanagudi: [
+          {
+            name: "Shree Krishna PG",
+            location: "Basavanagudi",
+            price: "₹8,500/month",
+            amenities: "WiFi, Meals, AC, Laundry, Power Backup",
+            image:
+              "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.3",
+            type: "For Students & Working Professionals",
+            contact: "+91 98765 43210",
+          },
+          {
+            name: "Comfort Zone PG",
+            location: "Basavanagudi",
+            price: "₹9,200/month",
+            amenities: "WiFi, Meals, AC, TV, Gym, Security",
+            image:
+              "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.5",
+            type: "Premium Executive PG",
+            contact: "+91 98765 43211",
+          },
+          {
+            name: "Budget Home PG",
+            location: "Basavanagudi",
+            price: "₹6,800/month",
+            amenities: "WiFi, Meals, Common TV, Laundry",
+            image:
+              "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.1",
+            type: "Budget Friendly",
+            contact: "+91 98765 43212",
+          },
+        ],
+        Jayanagar: [
+          {
+            name: "Royal Residency PG",
+            location: "Jayanagar",
+            price: "₹10,500/month",
+            amenities: "WiFi, Meals, AC, Swimming Pool, Gym",
+            image:
+              "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.7",
+            type: "Luxury PG for Professionals",
+            contact: "+91 98765 43213",
+          },
+          {
+            name: "Student Paradise PG",
+            location: "Jayanagar",
+            price: "₹7,500/month",
+            amenities: "WiFi, Meals, Study Room, Library, AC",
+            image:
+              "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.4",
+            type: "Specially for Students",
+            contact: "+91 98765 43214",
+          },
+          {
+            name: "Metro Stay PG",
+            location: "Jayanagar",
+            price: "₹8,800/month",
+            amenities: "WiFi, Meals, AC, Metro Access, Security",
+            image:
+              "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.2",
+            type: "Near Metro Station",
+            contact: "+91 98765 43215",
+          },
+        ],
+        Koramangala: [
+          {
+            name: "Tech Hub PG",
+            location: "Koramangala",
+            price: "₹12,000/month",
+            amenities: "WiFi, Meals, AC, Co-working Space, Gym",
+            image:
+              "https://images.unsplash.com/photo-1571624436279-b272adf1ee3b?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.8",
+            type: "Premium Tech Professional PG",
+            contact: "+91 98765 43216",
+          },
+          {
+            name: "Urban Living PG",
+            location: "Koramangala",
+            price: "₹11,200/month",
+            amenities: "WiFi, Meals, AC, Rooftop, Gaming Zone",
+            image:
+              "https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.6",
+            type: "Modern Urban PG",
+            contact: "+91 98765 43217",
+          },
+          {
+            name: "StartUp Stay PG",
+            location: "Koramangala",
+            price: "₹9,500/month",
+            amenities: "WiFi, Meals, AC, Meeting Rooms, Printer",
+            image:
+              "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.4",
+            type: "Entrepreneur Friendly",
+            contact: "+91 98765 43218",
+          },
+        ],
+        "JP Nagar": [
+          {
+            name: "Green Valley PG",
+            location: "JP Nagar",
+            price: "₹8,000/month",
+            amenities: "WiFi, Meals, AC, Garden, Yoga Area",
+            image:
+              "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.5",
+            type: "Peaceful Environment",
+            contact: "+91 98765 43219",
+          },
+          {
+            name: "Family Style PG",
+            location: "JP Nagar",
+            price: "₹7,800/month",
+            amenities: "WiFi, Home Meals, AC, Family Environment",
+            image:
+              "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.6",
+            type: "Homely Atmosphere",
+            contact: "+91 98765 43220",
+          },
+          {
+            name: "Executive Heights PG",
+            location: "JP Nagar",
+            price: "₹10,800/month",
+            amenities: "WiFi, Meals, AC, Elevator, Parking, Gym",
+            image:
+              "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+            rating: "4.7",
+            type: "Executive Class PG",
+            contact: "+91 98765 43221",
+          },
+        ],
+      };
+
+      // Function to update location input when dropdown changes
+      function updateLocationInput() {
+        const dropdown = document.getElementById("locationDropdown");
+        const input = document.getElementById("locationInput");
+        if (dropdown.value) {
+          input.value = dropdown.value;
+          input.placeholder = `Selected: ${dropdown.value}`;
+        } else {
+          input.placeholder = "Or type custom location";
+        }
+      }
+
+      // Enhanced search function with location-specific results
       function handleSearch(event) {
         event.preventDefault();
-        const location = document.getElementById("locationInput").value;
-        // Perform search functionality here
+        const dropdown = document.getElementById("locationDropdown");
+        const input = document.getElementById("locationInput");
+        const location = dropdown.value || input.value.trim();
+
+        if (!location) {
+          alert(
+            "Please select a location from dropdown or enter a custom location.",
+          );
+          return;
+        }
+
         console.log("Searching for:", location);
+
+        // Get PGs for the specific location or show all if custom location
+        let pgsToShow = [];
+        if (pgDatabase[location]) {
+          pgsToShow = pgDatabase[location];
+        } else {
+          // For custom locations, show sample results
+          pgsToShow = [
+            {
+              name: "Local PG Option",
+              location: location,
+              price: "₹8,000/month",
+              amenities: "Basic amenities available",
+              image:
+                "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&w=400&h=250&fit=crop",
+              rating: "4.0",
+              type: "Standard PG",
+              contact: "+91 98765 43222",
+            },
+          ];
+        }
+
+        // Display search results
+        const resultsDiv = document.getElementById("searchResultsWithImages");
+        let resultsHTML = `
+          <div style="margin-top: 40px;">
+            <h3 style="color: white; font-size: 28px; margin-bottom: 20px; text-align: center; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+              <i class="fas fa-map-marker-alt" style="margin-right: 12px; color: #4ade80;"></i>
+              ${pgsToShow.length} PG${pgsToShow.length > 1 ? "s" : ""} Found in ${location}
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; padding: 0 20px;">
+        `;
+
+        pgsToShow.forEach((pg, index) => {
+          resultsHTML += `
+            <div style="background: rgba(255,255,255,0.98); border-radius: 24px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15); transition: all 0.4s ease; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); animation: fadeInUp 0.6s ease forwards; animation-delay: ${index * 0.1}s; opacity: 0;" 
+                 onmouseover="this.style.transform='translateY(-12px) scale(1.02)'; this.style.boxShadow='0 30px 60px rgba(0,0,0,0.25)'" 
+                 onmouseout="this.style.transform='translateY(0) scale(1)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.15)'">
+              <div style="position: relative;">
+                <img src="${pg.image}" alt="${pg.name}" 
+                     style="width: 100%; height: 220px; object-fit: cover;">
+                <div style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 16px; border-radius: 25px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                  <i class="fas fa-star" style="margin-right: 5px; color: #ffd700;"></i>
+                  ${pg.rating}
+                </div>
+                <div style="position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.7); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; backdrop-filter: blur(10px);">
+                  ${pg.type}
+                </div>
+              </div>
+              <div style="padding: 30px;">
+                <h4 style="color: #1a202c; font-size: 22px; font-weight: 700; margin: 0 0 8px 0; line-height: 1.3;">${pg.name}</h4>
+                <p style="color: #64748b; margin: 0 0 15px 0; font-size: 16px; display: flex; align-items: center;">
+                  <i class="fas fa-map-marker-alt" style="color: #667eea; margin-right: 8px; font-size: 14px;"></i>
+                  ${pg.location}, Bangalore
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+                  <p style="color: #1a202c; font-size: 26px; font-weight: 800; margin: 0; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    ${pg.price}
+                  </p>
+                  <p style="color: #64748b; margin: 0; font-size: 14px;">
+                    <i class="fas fa-phone" style="color: #4ade80; margin-right: 6px;"></i>
+                    ${pg.contact}
+                  </p>
+                </div>
+                <div style="background: #f8fafc; padding: 15px; border-radius: 12px; margin: 20px 0;">
+                  <p style="color: #64748b; margin: 0; font-size: 14px; line-height: 1.6;">
+                    <i class="fas fa-check-circle" style="color: #4ade80; margin-right: 8px;"></i>
+                    ${pg.amenities}
+                  </p>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 25px;">
+                  <button style="flex: 1; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 14px 18px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 15px; transition: all 0.3s ease;" 
+                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 10px 25px rgba(102,126,234,0.4)'" 
+                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'"
+                          onclick="alert('Viewing details for ${pg.name}')">
+                    <i class="fas fa-eye" style="margin-right: 8px;"></i>View Details
+                  </button>
+                  <button style="flex: 1; background: transparent; color: #667eea; border: 2px solid #667eea; padding: 14px 18px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 15px; transition: all 0.3s ease;" 
+                          onmouseover="this.style.background='#667eea'; this.style.color='white'; this.style.transform='translateY(-2px)'" 
+                          onmouseout="this.style.background='transparent'; this.style.color='#667eea'; this.style.transform='translateY(0)'"
+                          onclick="alert('Calling ${pg.contact} for ${pg.name}')">
+                    <i class="fas fa-phone" style="margin-right: 8px;"></i>Contact
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        resultsHTML += `
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+              <button style="background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 15px 30px; border-radius: 25px; font-weight: 600; cursor: pointer; font-size: 16px; transition: all 0.3s ease; backdrop-filter: blur(10px);"
+                      onmouseover="this.style.background='rgba(255,255,255,0.3)'; this.style.transform='translateY(-2px)'"
+                      onmouseout="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateY(0)'"
+                      onclick="document.getElementById('searchResultsWithImages').innerHTML = ''; document.getElementById('locationInput').value = ''; document.getElementById('locationDropdown').value = '';">
+                <i class="fas fa-search" style="margin-right: 8px;"></i>Search Again
+              </button>
+            </div>
+          </div>
+        `;
+
+        resultsDiv.innerHTML = resultsHTML;
+
+        // Add CSS animation for fade in effect
+        const style = document.createElement("style");
+        style.textContent = `
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `;
+        document.head.appendChild(style);
+
+        // Smooth scroll to results
+        setTimeout(() => {
+          resultsDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 200);
       }
+
+      // Fade in animation on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationDelay = "0.2s";
+            entry.target.classList.add("fade-in");
+          }
+        });
+      }, observerOptions);
+
+      // Observe all fade-in elements
+      document.addEventListener("DOMContentLoaded", () => {
+        const fadeElements = document.querySelectorAll(
+          ".feature-card, .contact-item",
+        );
+        fadeElements.forEach((el) => observer.observe(el));
+
+        // Check authentication status on page load
+        checkAuthStatus();
+        checkLoginRedirect();
+      });
+
+      // Add some interactive hover effects
+      document.querySelectorAll(".feature-card").forEach((card) => {
+        card.addEventListener("mouseenter", () => {
+          card.style.transform = "translateY(-10px) scale(1.02)";
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "translateY(0) scale(1)";
+        });
+      });
+
+      // Test function to simulate login (remove in production)
+      // Uncomment the line below to test the authenticated state
+      // setTimeout(() => simulateLogin(), 2000);
     </script>
   </body>
 </html>
